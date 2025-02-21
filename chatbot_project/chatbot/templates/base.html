@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweek</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+   
+        .header {
+            background-color: #3f3e3e;
+            color: white;
+            align-items: center;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+
+        .header img {
+            width: 200px;  
+            height: auto;
+            position: absolute;
+            left: 20px;  
+        }
+
+        .header h1 {
+            margin: 0;
+            flex-grow: 1;  /* Makes sure text stays centered */
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #3f3e3e;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 0;
+        }
+
+        .sidebar a:hover {
+            background-color: #444;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .footer {
+            background-color: #3f3e3e;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    <div class="header">
+        <img src="{% static 'images/sweco_logo.png' %}" alt="Sweco Logo">
+        <h1>Sweek!</h1>
+    </div>
+
+    <div class="container">
+        
+        <div class="sidebar">
+            <h3>Menu</h3>
+            <a href="#">Home</a>
+            <a href="#">Recent chats</a>
+        </div>
+
+        <div class="main-content">
+            <h2>Welcome!</h2>
+            <p>Soon I will lunch the chatbot here</p>
+
+            <textarea name="chatbot" id="chatbot" cols="30" rows="10" placeholder="The chat is going to be here! be patient"></textarea>
+        </div>
+    
+
+
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Designed by Sweco based on a DeepSeek model
+    </div>
+
+</body>
+</html>
