@@ -102,8 +102,122 @@
     </div>
 
     <div class="footer">
-        &copy; 2025 Designed by Sweco based on a DeepSeek model
+        &copy; 2025 Designed by Sweco based on a <span style="color: #4d6bfe;">DeepSeek</span> model <!--To have the deepseek word in blue like the real deepseek-->
     </div>
 
 </body>
 </html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        
+        .chat-container {
+            width: 50%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+
+        .user-message {
+            color: blue;
+            font-weight: bold;
+        }
+
+        .bot-message {
+            color: green;
+            font-weight: bold;
+        }
+
+        .input-area {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 18%;
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <h2>Sweek</h2>
+        <div class="chat-box" id="chatbox">
+             Chat messages will appear here -->
+        <!-- </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type a message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let userInput = document.getElementById("userInput").value;
+            let chatbox = document.getElementById("chatbox");
+
+            if (userInput.trim() === "") return; // Ignore empty messages
+
+            // Show user message
+            chatbox.innerHTML += `<p class="user-message">You: ${userInput}</p>`;
+
+            // Send request to Django API
+            fetch("/api/chatbot/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatbox.innerHTML += `<p class="bot-message">Bot: ${data.response.choices[0].message.content}</p>`;
+                document.getElementById("userInput").value = ""; // Clear input
+                chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html> -->
