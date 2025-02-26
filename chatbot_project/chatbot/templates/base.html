@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sweek</title>
+    <script type="text/javascript" id="MathJax-script" async 
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +14,7 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: 30vh;
         }
    
         .header {
@@ -43,6 +46,27 @@
             flex: 1;
         }
 
+        .chat-container {
+            width: 80vw;  /* Full screen width */
+            height: 88vh; /* Full screen height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;  /* Push input to bottom */
+            align-items: center;
+            background: white;
+            padding: 20px;
+            
+        }
+        .chat-box {
+            flex-grow: 1;  /* Allows chat to expand */
+            width: 80%;   /* Full width */
+            max-height: 80vh; /* Prevents it from overflowing */
+            overflow-y: auto;
+            /* border: 1px solid #ddd; */
+            padding: 10px;
+            background-color: #fff;
+        }
+
         .sidebar {
             width: 200px;
             background-color: #3f3e3e;
@@ -66,6 +90,75 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
+        .user-message {
+            color: blue;
+            font-weight: bold;
+        }
+
+        .bot-message {
+            color: green;
+            font-weight: bold;
+        }
+        .thought-container {
+            margin-top: 5px;
+        }
+
+        .toggle-thought {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toggle-thought:hover {
+            background-color: #0056b3;
+        }
+
+        .thought-content {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .input-area{
+            width: 80%;  /* Full width */
+            height: 50px;  /* Increase height */
+            font-size: 16px;  /* Make text larger */
+            padding: 10px;  /* Add padding for better spacing */
+            border-radius: 5px;
+            box-sizing: border-box;  /* Prevents padding from breaking width */
+            display: flex;
+            align-items: center;
+        }
+
+        button {
+            width: 15%;
+            background-color: #4d6bfe;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;  /* Make it bigger */
+            font-size: 16px;
+            padding:15px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: none;  /* Prevents resizing */
+        }
+
+        button:hover {
+            background-color: darkblue;
+        }
 
         .footer {
             background-color: #3f3e3e;
@@ -73,6 +166,31 @@
             text-align: center;
             padding: 10px;
         }
+        .input-area {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    textarea {
+        width: 100%;
+        height: 40px;
+        resize: none;
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    #sendButton {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: blue; /* Change color as needed */
+    }
+
+    #sendButton:hover {
+        color: rgb(42, 42, 202);
+    }
     </style>
 </head>
 <body>
@@ -90,19 +208,138 @@
             <a href="#">Recent chats</a>
         </div>
 
-        <div class="main-content">
-            <h2>Welcome!</h2>
-            <p>Soon I will lunch the chatbot here</p>
-
-            <textarea name="chatbot" id="chatbot" cols="30" rows="10" placeholder="The chat is going to be here! be patient"></textarea>
+        <div class="chat-container">
+            <div class="chat-box" id="chatbox">
+                <!-- Chat messages will appear here... -->
+            </div>
+            <div class="input-area">
+                <textarea id="userInput" placeholder="Type a message..." onkeydown="handleKeyPress(event)"></textarea>
+                <button onclick="sendMessage()" id="sendButton">
+                    &#9658; <!-- Unicode for a small right arrow -->
+                </button>
+            </div>
         </div>
-    
+        <script>
+            function sendMessage() {
+                let userInput = document.getElementById("userInput").value;
+                let chatbox = document.getElementById("chatbox");
+        
+                if (userInput.trim() === "") return; // Ignore empty messages
+        
+                // Display the user's message
+                chatbox.innerHTML += `<p class="user-message">You: ${userInput}</p>`;
+        
+                // Clear input field
+                document.getElementById("userInput").value = "";
+        
+                // Scroll to latest message
+                chatbox.scrollTop = chatbox.scrollHeight;
+        
+                // Send request to Django API
+                fetch("/chatbot/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userInput })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if ("reply" in data) {
+                        let botMessage = data.reply;  // Extract chatbot reply
+                        let thoughtProcess =data.thought;  // Extract AI thought process
+        
+                        // Create a collapsible section for thought process
+                        let thoughtHtml = `
+                            <div class="thought-container">
+                                <button class="toggle-thought" onclick="toggleThought(this)">Show Thought Process</button>
+                                <div class="thought-content" style="display: none;">
+                                    <p><strong>Chatbot Thought Process:</strong></p>
+                                    <p>${thoughtProcess}</p>
+                                </div>
+                            </div>
+                        `;
+        
+                        // Display chatbot response with collapsible thought process
+                        chatbox.innerHTML += `<p class="bot-message">🤖: ${botMessage}</p>` + thoughtHtml;
+                    } else {
+                        chatbox.innerHTML += `<p class="bot-message">ChatBot: Error: No response received.</p>`;
+                    }
+        
+                    // Scroll to latest message
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    chatbox.innerHTML += `<p class="bot-message">Error: Unable to contact chatbot.</p>`;
+                });
+            }
+        
+            function toggleThought(button) {
+                let content = button.nextElementSibling;
+                if (content.style.display === "none") {
+                    content.style.display = "block";
+                    button.textContent = "Hide Thought Process";
+                } else {
+                    content.style.display = "none";
+                    button.textContent = "Show Thought Process";
+                }
+            }
 
+            function handleKeyPress(event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault(); // Prevents a new line in the textarea
+                    sendMessage();
+                }
+            }
+            function formatresponse(response) {
+            if (!response) return "";
+
+            // Convert `\n` to `<br>` for paragraph separation
+            response = response.replace(/\n/g, "<br>");
+
+            // Convert **bold text** to `<strong>bold text</strong>`
+            response = response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+            // Convert __italic text__ to `<em>italic text</em>`
+            response = response.replace(/__(.*?)__/g, "<em>$1</em>");
+
+            // Convert `- lists` into `<ul><li>` format
+            response = response.replace(/- (.*?)(<br>|$)/g, "<li>$1</li>");
+            response = response.replace(/(<li>.*<\/li>)+/g, "<ul>$&</ul>");  // Wrap lists in <ul>
+
+            // Convert links (URLs) into clickable `<a>` elements
+            response = response.replace(/(https?:\/\/[^\s]+)/g, "<a href='$1' target='_blank'>$1</a>");
+
+            // ✅ Fix Inline Math Issues: Convert `\(` and `\)` into proper inline math `\( ... \)`
+            response = response.replace(/\\\((.*?)\\\)/g, "\\($1\\)");
+
+            // ✅ Fix Block Math Issues: Convert `\[` and `\]` into proper block math `\[ ... \]`
+            response = response.replace(/\\\[(.*?)\\\]/g, "\\[$1\\]");
+
+            // ✅ Fix Incorrect LaTeX Symbols (e.g., "times" instead of `\times`)
+            response = response.replace(/times/g, "\\times");  // Convert "times" to proper `\times`
+            response = response.replace(/boxed{(.*?)}/g, "\\boxed{$1}");  // Ensure `\boxed{}` works
+
+            // ✅ Re-render MathJax after updating the chatbox
+            setTimeout(() => {
+                if (window.MathJax) {
+                    MathJax.typesetPromise();
+                }
+            }, 50);
+
+            return response;
+        }
+
+
+        </script>
+        
+        
+        
 
     </div>
 
     <div class="footer">
         &copy; 2025 Designed by Sweco based on a <span style="color: #4d6bfe;">DeepSeek</span> model <!--To have the deepseek word in blue like the real deepseek-->
+        <h5>Sweek may produce inaccurate information about people, places, or facts. Please check before using the information.</h5>
     </div>
 
 </body>

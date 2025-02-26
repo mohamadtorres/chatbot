@@ -8,82 +8,59 @@ from django.template import loader
 
 def chatbot(request):
     template = loader.get_template('base.html') #loader the template u want
-    return HttpResponse(template.render()) #render the template u loaded
+    return HttpResponse(template.render()) 
 
-# @csrf_exempt
-# def chatbot_view(request):
-#     if request.method == 'POST': #chatbot receives POST request
-#         try:
-#             data = json.loads(request.body) #converting the body (json) to python dictionary
-#             user_message = data.get('message', "")
-#             DEEPSEEK_API_URL = "https://r1-prod-swecoab-new-res.germanywestcentral.inference.ml.azure.com/v1/chat/completions"
-#             API_KEY = "W8zGgBDxoHsvreZCkHkhcDuRmHS1j20a"
-#             headers = {
-#                 "Authorization": "Bearer {API_KEY}",
-#                 "Content-Type": "application/json",
-#             }
+import re
 
-#             payload = {"message" : user_message}
+def extract_chatbot_thought_and_reply(response):
+    """
+    Extracts both the AI's thought process and final reply.
+    - Thought process is before `</think>`.
+    - Reply is after `</think>`.
+    """
+    response = response.strip() 
 
-#             #send request to deepseel api
-#             response = requests.post(DEEPSEEK_API_URL, headers=headers, json=payload)
-#             deepseek_response = response.json() #convert response to python dictionary
+    if "</think>" in response:
+        thought, reply = response.split("</think>", 1)  # Split at </think>
+    else:
+        thought = "No thought process provided."
+        reply = response  # If </think> is missing, use the full response
 
-#             return JsonResponse({"response" : deepseek_response}) #return the response in json format
-        
+    return thought.strip(), reply.strip()
 
-#         except Exception as e:
-#             return JsonResponse({"error" : str(e)}, status = 500) #return error message in json format if any error occurs
-#     return JsonResponse({"error" : "Only POST requests are allowed"}, status = 400) #return error message in json format if request method is not POST
+@csrf_exempt
+def chatbot_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            user_message = data.get("message", "")
 
-# import requests
-# from django.http import JsonResponse
-# from django.views.decorators.csrf import csrf_exempt
-# import json
+            DEEPSEEK_API_URL = "https://r1-prod-swecoab-new-res.germanywestcentral.inference.ml.azure.com/v1/chat/completions"
+            API_KEY = "W8zGgBDxoHsvreZCkHkhcDuRmHS1j20a"
 
-# @csrf_exempt
-# def chatbot_view(request):
-#     if request.method == "POST":
-#         try:
-#             # Step 1: Print the request body to check if it's being received
-#             print("Raw Request Body:", request.body)
+            headers = {
+                "Authorization": f"Bearer {API_KEY}",
+                "Content-Type": "application/json"
+            }
 
-#             data = json.loads(request.body)  # Convert request body (JSON) to Python dictionary
-#             user_message = data.get("message", "")
+            payload = {
+                "messages": [{"role": "user", "content": user_message}],
+                "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+            }
 
-#             # Step 2: Print the extracted message
-#             print("Extracted Message:", user_message)
+            response = requests.post(DEEPSEEK_API_URL, json=payload, headers=headers)
+            deepseek_response = response.json()
 
-#             # DeepSeek API details
-#             DEEPSEEK_API_URL = "https://r1-prod-swecoab-new-res.germanywestcentral.inference.ml.azure.com/v1/chat/completions"  # Replace with actual API
-#             API_KEY = "W8zGgBDxoHsvreZCkHkhcDuRmHS1j20a"  # Replace with actual API key
+            #Extract AI response content correctly
+            assistant_message = deepseek_response["choices"][0]["message"]["content"]
 
-#             headers = {
-#                 "Authorization": f"Bearer {API_KEY}",
-#                 "Content-Type": "application/json"
-#             }
-#             payload = {"message": user_message}  # The message sent to DeepSeek
+            # Extract thought process and actual reply
+            thought, reply = extract_chatbot_thought_and_reply(assistant_message)
 
-#             # Step 3: Print the payload before sending the request
-#             payload = {
-#                 "messages": [{"role": "user", "content": user_message}],  # DeepSeek expects "messages"
-#                 "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"  # Specify which model to use (replace if needed)
-#             }
-#             response = requests.post(DEEPSEEK_API_URL, json=payload, headers=headers)
+            return JsonResponse({"thought": thought, "reply": reply})  # Send both
 
-#             # Step 4: Print the response from DeepSeek API
-#             print("Raw API Response:", response.text)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
-#             deepseek_response = response.json()  # Convert response to JSON
+    return JsonResponse({"error": "Only POST requests are allowed"}, status=400)
 
-#             return JsonResponse({"response": deepseek_response})
-
-#         except json.JSONDecodeError as e:
-#             print("JSON Decode Error:", e)
-#             return JsonResponse({"error": "Invalid JSON format received"}, status=400)
-
-#         except Exception as e:
-#             print("Error:", e)
-#             return JsonResponse({"error": str(e)}, status=500)
-
-#     return JsonResponse({"error": "Invalid request"}, status=400)
