@@ -1,203 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Prism.js for Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sweek</title>
+    <title>SwecoDeep</title>
     <script type="text/javascript" id="MathJax-script" async 
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
     </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 30vh;
-        }
-   
-        .header {
-            background-color: #3f3e3e;
-            color: white;
-            align-items: center;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            position: relative;
-        }
-
-
-        .header img {
-            width: 200px;  
-            height: auto;
-            position: absolute;
-            left: 20px;  
-        }
-
-        .header h1 {
-            margin: 0;
-            flex-grow: 1;  /* Makes sure text stays centered */
-            text-align: center;
-        }
-
-        .container {
-            display: flex;
-            flex: 1;
-        }
-
-        .chat-container {
-            width: 80vw;  /* Full screen width */
-            height: 88vh; /* Full screen height */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;  /* Push input to bottom */
-            align-items: center;
-            background: white;
-            padding: 20px;
-            
-        }
-        .chat-box {
-            flex-grow: 1;  /* Allows chat to expand */
-            width: 80%;   /* Full width */
-            max-height: 80vh; /* Prevents it from overflowing */
-            overflow-y: auto;
-            /* border: 1px solid #ddd; */
-            padding: 10px;
-            background-color: #fff;
-        }
-
-        .sidebar {
-            width: 200px;
-            background-color: #3f3e3e;
-            color: white;
-            padding: 20px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 10px 0;
-        }
-
-        .sidebar a:hover {
-            background-color: #444;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .user-message {
-            color: blue;
-            font-weight: bold;
-        }
-
-        .bot-message {
-            color: green;
-            font-weight: bold;
-        }
-        .thought-container {
-            margin-top: 5px;
-        }
-
-        .toggle-thought {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .toggle-thought:hover {
-            background-color: #0056b3;
-        }
-
-        .thought-content {
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-
-        .input-area{
-            width: 80%;  /* Full width */
-            height: 50px;  /* Increase height */
-            font-size: 16px;  /* Make text larger */
-            padding: 10px;  /* Add padding for better spacing */
-            border-radius: 5px;
-            box-sizing: border-box;  /* Prevents padding from breaking width */
-            display: flex;
-            align-items: center;
-        }
-
-        button {
-            width: 15%;
-            background-color: #4d6bfe;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        textarea {
-            width: 100%;
-            height: 80px;  /* Make it bigger */
-            font-size: 16px;
-            padding:15px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            resize: none;  /* Prevents resizing */
-        }
-
-        button:hover {
-            background-color: darkblue;
-        }
-
-        .footer {
-            background-color: #3f3e3e;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
-        .input-area {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
     
-    textarea {
-        width: 100%;
-        height: 40px;
-        resize: none;
-        padding: 8px;
-        font-size: 16px;
-    }
+    <link rel="stylesheet" href="static\styles\style.css">
 
-    #sendButton {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: blue; /* Change color as needed */
-    }
-
-    #sendButton:hover {
-        color: rgb(42, 42, 202);
-    }
-    </style>
 </head>
 <body>
     {% load static %}
     <div class="header">
         <img src="{% static 'images/sweco_logo.png' %}" alt="Sweco Logo">
-        <h1>Sweek!</h1>
+        <h1>SwecoDeep</h1>
     </div>
 
     <div class="container">
@@ -206,6 +32,35 @@
             <h3>Menu</h3>
             <a href="#">Home</a>
             <a href="#">Recent chats</a>
+            <hr>
+            
+            <!-- Privacy Button -->
+            <a href="#" onclick="openModal('privacyModal')">
+                Privacy <span class="info-icon">ⓘ</span>
+            </a>
+        
+            <!-- Help Button -->
+            <a href="#" onclick="openModal('helpModal')">
+                Help <span class="info-icon">ⓘ</span>
+            </a>
+        </div>
+        
+        <!-- Privacy Modal -->
+        <div id="privacyModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+                <h2>Privacy Policy</h2>
+                <p>Your privacy is important. We do not store or share your chat data.</p>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div id="helpModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('helpModal')">&times;</span>
+                <h2>Help</h2>
+                <p>If you have any issues, please contact support or refer to our documentation.</p>
+            </div>
         </div>
 
         <div class="chat-container">
@@ -223,19 +78,13 @@
             function sendMessage() {
                 let userInput = document.getElementById("userInput").value;
                 let chatbox = document.getElementById("chatbox");
-        
-                if (userInput.trim() === "") return; // Ignore empty messages
-        
-                // Display the user's message
-                chatbox.innerHTML += `<p class="user-message">You: ${userInput}</p>`;
-        
-                // Clear input field
+
+                if (userInput.trim() === "") return;
+
+                chatbox.innerHTML += `<div class="user-message">${userInput}</div>`;
                 document.getElementById("userInput").value = "";
-        
-                // Scroll to latest message
                 chatbox.scrollTop = chatbox.scrollHeight;
-        
-                // Send request to Django API
+
                 fetch("/chatbot/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -244,10 +93,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if ("reply" in data) {
-                        let botMessage = data.reply;  // Extract chatbot reply
-                        let thoughtProcess =data.thought;  // Extract AI thought process
-        
-                        // Create a collapsible section for thought process
+                        let botMessage = formatresponse(data.reply);
+                        let thoughtProcess = data.thought;
+
                         let thoughtHtml = `
                             <div class="thought-container">
                                 <button class="toggle-thought" onclick="toggleThought(this)">Show Thought Process</button>
@@ -257,19 +105,24 @@
                                 </div>
                             </div>
                         `;
-        
-                        // Display chatbot response with collapsible thought process
-                        chatbox.innerHTML += `<p class="bot-message">🤖: ${botMessage}</p>` + thoughtHtml;
+
+                        chatbox.innerHTML += `<div class="bot-message">🤖: ${botMessage}</div>` + thoughtHtml;
+
+                        
+                        setTimeout(() => {
+                            Prism.highlightAll();
+                            MathJax.typeset(); 
+                        }, 50);
                     } else {
                         chatbox.innerHTML += `<p class="bot-message">ChatBot: Error: No response received.</p>`;
                     }
-        
-                    // Scroll to latest message
+
                     chatbox.scrollTop = chatbox.scrollHeight;
                 })
                 .catch(error => {
                     console.error("Error:", error);
                     chatbox.innerHTML += `<p class="bot-message">Error: Unable to contact chatbot.</p>`;
+
                 });
             }
         
@@ -286,48 +139,89 @@
 
             function handleKeyPress(event) {
                 if (event.key === "Enter" && !event.shiftKey) {
-                    event.preventDefault(); // Prevents a new line in the textarea
+                    event.preventDefault();
                     sendMessage();
                 }
             }
             function formatresponse(response) {
-            if (!response) return "";
+                if (!response) return "";
 
-            // Convert `\n` to `<br>` for paragraph separation
-            response = response.replace(/\n/g, "<br>");
+                // Convert `\n` to `<br>` for paragraph separation
+                response = response.replace(/\n/g, "<br>");
 
-            // Convert **bold text** to `<strong>bold text</strong>`
-            response = response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+                // Convert **bold text** to `<strong>bold text</strong>`
+                response = response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-            // Convert __italic text__ to `<em>italic text</em>`
-            response = response.replace(/__(.*?)__/g, "<em>$1</em>");
+                // Convert __italic text__ to `<em>italic text</em>`
+                response = response.replace(/__(.*?)__/g, "<em>$1</em>");
 
-            // Convert `- lists` into `<ul><li>` format
-            response = response.replace(/- (.*?)(<br>|$)/g, "<li>$1</li>");
-            response = response.replace(/(<li>.*<\/li>)+/g, "<ul>$&</ul>");  // Wrap lists in <ul>
+                // Convert `- lists` into `<ul><li>` format
+                response = response.replace(/- (.*?)(<br>|$)/g, "<li>$1</li>");
+                response = response.replace(/(<li>.*<\/li>)+/g, "<ul>$&</ul>"); // Wrap lists in <ul>
 
-            // Convert links (URLs) into clickable `<a>` elements
-            response = response.replace(/(https?:\/\/[^\s]+)/g, "<a href='$1' target='_blank'>$1</a>");
+                // Convert links (URLs) into clickable `<a>` elements
+                response = response.replace(/(https?:\/\/[^\s]+)/g, "<a href='$1' target='_blank'>$1</a>");
 
-            // ✅ Fix Inline Math Issues: Convert `\(` and `\)` into proper inline math `\( ... \)`
-            response = response.replace(/\\\((.*?)\\\)/g, "\\($1\\)");
+                // ✅ Convert inline code (`code`) into `<code>code</code>`
+                response = response.replace(/`([^`]+?)`/g, "<code>$1</code>");
 
-            // ✅ Fix Block Math Issues: Convert `\[` and `\]` into proper block math `\[ ... \]`
-            response = response.replace(/\\\[(.*?)\\\]/g, "\\[$1\\]");
+                // ✅ **Fix: Normalize Multi-line Code Blocks**
+                response = response.replace(/``?(\w*)\n([\s\S]*?)(?:`{1,2}|$)/g, function(match, lang, code) {
+                    let languageClass = lang ? `language-${lang}` : "language-python"; // Default to Python
 
-            // ✅ Fix Incorrect LaTeX Symbols (e.g., "times" instead of `\times`)
-            response = response.replace(/times/g, "\\times");  // Convert "times" to proper `\times`
-            response = response.replace(/boxed{(.*?)}/g, "\\boxed{$1}");  // Ensure `\boxed{}` works
+                    return `
+                        <div class="code-container">
+                            <div class="code-header">
+                                <span class="language-label">${languageClass}</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre class="code-block"><code class="${languageClass}">${Prism.highlight(code.trim(), Prism.languages[lang] || Prism.languages.python, lang || 'python')}</code></pre>
+                        </div>
+                    `;
+                });
 
-            // ✅ Re-render MathJax after updating the chatbox
-            setTimeout(() => {
-                if (window.MathJax) {
-                    MathJax.typesetPromise();
-                }
-            }, 50);
+                return response;
+            }
 
-            return response;
-        }
+            // ✅ Function to copy code from the box
+            function copyCode(button) {
+                let codeBlock = button.parentElement.nextElementSibling.querySelector("code");
+                let textArea = document.createElement("textarea");
+                textArea.value = codeBlock.innerText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                button.innerText = "Copied!";
+                setTimeout(() => button.innerText = "Copy", 2000);
+            }
+
+
+            // Function to open the modal when the user clicks
+            function openModal(modalId) {
+                let modal = document.getElementById(modalId);
+                modal.style.display = "flex"; // ✅ Fix: Ensures proper alignment in the center
+            }
+
+            // Function to close the modal when clicking "X"
+            function closeModal(modalId) {
+                let modal = document.getElementById(modalId);
+                modal.style.display = "none";
+            }
+
+            // ✅ Close modal when clicking outside of it
+            window.onclick = function(event) {
+                let modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (event.target === modal) {
+            modal.style.display = "none";
+                    }
+                });
+            };
+
+
+
+
 
 
         </script>
@@ -344,117 +238,3 @@
 
 </body>
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        
-        .chat-container {
-            width: 50%;
-            margin: 50px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .chat-box {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            margin-bottom: 10px;
-            background-color: #fff;
-        }
-
-        .user-message {
-            color: blue;
-            font-weight: bold;
-        }
-
-        .bot-message {
-            color: green;
-            font-weight: bold;
-        }
-
-        .input-area {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        input {
-            width: 80%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            width: 18%;
-            background-color: blue;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: darkblue;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="chat-container">
-        <h2>Sweek</h2>
-        <div class="chat-box" id="chatbox">
-             Chat messages will appear here -->
-        <!-- </div>
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="Type a message..." />
-            <button onclick="sendMessage()">Send</button>
-        </div>
-    </div>
-
-    <script>
-        function sendMessage() {
-            let userInput = document.getElementById("userInput").value;
-            let chatbox = document.getElementById("chatbox");
-
-            if (userInput.trim() === "") return; // Ignore empty messages
-
-            // Show user message
-            chatbox.innerHTML += `<p class="user-message">You: ${userInput}</p>`;
-
-            // Send request to Django API
-            fetch("/api/chatbot/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userInput })
-            })
-            .then(response => response.json())
-            .then(data => {
-                chatbox.innerHTML += `<p class="bot-message">Bot: ${data.response.choices[0].message.content}</p>`;
-                document.getElementById("userInput").value = ""; // Clear input
-                chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll
-            })
-            .catch(error => console.error("Error:", error));
-        }
-    </script>
-
-</body>
-</html> -->
