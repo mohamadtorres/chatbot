@@ -8,7 +8,7 @@ body {
 }
 
 .header {
-    background-color: #3f3e3e;
+    background-color: #111111;
     color: white;
     align-items: center;
     padding: 15px;
@@ -62,20 +62,20 @@ body {
 
 .sidebar {
     width: 200px;
-    background-color: #3f3e3e;
+    background-color: #111111;
     color: white;
     padding: 20px;
 }
 
 .sidebar a {
     display: block;
-    color: white;
+    color: #111111;
     text-decoration: none;
     padding: 10px 0;
 }
 
 .sidebar a:hover {
-    background-color: #444;
+    background-color: #000000;
 }
 
 .main-content {
@@ -101,31 +101,43 @@ body {
 mjx-container {
     color: rgb(15, 145, 78) !important; /* Forces all MathJax elements to match bot-message color */
 }
+.math-inline {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.math-block {
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+}
 
 .thought-container {
     margin-top: 5px;
 }
 
+/* Thought Process Button (Arrow) */
 .toggle-thought {
-    background-color: #007bff;
-    color: white;
+    background: none;
     border: none;
-    padding: 5px;
-    border-radius: 5px;
+    font-size: 18px;
     cursor: pointer;
-    font-size: 14px;
+    padding: 5px;
+    transition: transform 0.3s ease-in-out;
 }
 
 .toggle-thought:hover {
     background-color: #0056b3;
 }
 
+/* Thought Content (Hidden by Default) */
 .thought-content {
     background-color: #f8f9fa;
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 5px;
     margin-top: 5px;
+    display: none;
 }
 
 .input-area{
@@ -164,7 +176,7 @@ button:hover {
 }
 
 .footer {
-    background-color: #3f3e3e;
+    background-color: #111111;
     color: white;
     text-align: center;
     padding: 10px;
