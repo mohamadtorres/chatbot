@@ -28,7 +28,7 @@
 <body>
     {% load static %}
     <div class="header">
-        <img src="{% static 'images/sweco_logo.png' %}" alt="Sweco Logo">
+        <img src="{% static 'images/sweco_logo1.png' %}" alt="Sweco Logo">
         <h1>SwecoDeep</h1>
     </div>
 
@@ -38,17 +38,17 @@
             <h3>Menu</h3>
             <a href="#">Home</a>
             <a href="#">Recent chats</a>
-            <hr>
-            
+            <div class=bottom-links">
             <!-- Privacy Button -->
-            <a href="#" onclick="openModal('privacyModal')">
-                Privacy <span class="info-icon">ⓘ</span>
-            </a>
-        
-            <!-- Help Button -->
-            <a href="#" onclick="openModal('helpModal')">
-                Help <span class="info-icon">ⓘ</span>
-            </a>
+                <a href="#" onclick="openModal('privacyModal')">
+                    Privacy <span class="info-icon">ⓘ</span>
+                </a>
+            
+                <!-- Help Button -->
+                <a href="#" onclick="openModal('helpModal')">
+                    Help <span class="info-icon">ⓘ</span>
+                </a>
+                </div>
         </div>
         
         <!-- Privacy Modal -->
@@ -98,19 +98,19 @@
                 For guidance information regarding AI usage at Sweco refer to the AI Usage Procedure.<br>
                 
                 <h3>SwecoGPT Document Storage Instructions</h3>
-                <li>1. Users can upload a maximum of 100 MB per folder.</li>
+                1. Users can upload a maximum of 100 MB per folder.<br>
                 
-                <li>2. Each user can have 5 folders.></li>
+                2. Each user can have 5 folders.<br>
 
-                <li>3. Only copies of documents should be uploaded. Users should always keep an original version on a separate storage.</li>
+                3. Only copies of documents should be uploaded. Users should always keep an original version on a separate storage.<br>
                 
-                <li>4. Documents should only be uploaded for the intended purpose of SwecoGPT. The intended purpose is to use GPT prompts regularly on the document contents.</li>
+                4. Documents should only be uploaded for the intended purpose of SwecoGPT. The intended purpose is to use GPT prompts regularly on the document contents.<br>
                 
-                <li>5. If a folder has not been activated for 45 days, an email will be sent to the user that the folder and contents will be deleted in 30 days, a reminder email will be sent after 10 more days if it is not activated or deleted, a reminder email will be sent after 10 further days if it is not activated or deleted, a final reminder email will be sent 7 days after with final warning of deletion in 3 days time.</li>
+                5. If a folder has not been activated for 45 days, an email will be sent to the user that the folder and contents will be deleted in 30 days, a reminder email will be sent after 10 more days if it is not activated or deleted, a reminder email will be sent after 10 further days if it is not activated or deleted, a final reminder email will be sent 7 days after with final warning of deletion in 3 days time.
                 
-                <li>6. The folder will be unindexed and then native files archived for 30 further days and then deleted, after this the documents will be unrecoverable.</li>
+                6. The folder will be unindexed and then native files archived for 30 further days and then deleted, after this the documents will be unrecoverable.<br>
                 
-                <li>7. The policy is the same for shared folders.</li>
+                7. The policy is the same for shared folders.
             </div>
         </div>
 
