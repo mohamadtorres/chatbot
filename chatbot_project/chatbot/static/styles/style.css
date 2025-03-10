@@ -1,68 +1,4 @@
-body {
-    font-family: 'Swecosans', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 30vh;
-}
-
-.header {
-    background-color: #111111;
-    color: rgb(223, 219, 219);
-    align-items: center;
-    padding: 15px;
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-
-.header img {
-    width: 200px;  
-    height: auto;
-    position: absolute;
-    left: 20px;  
-}
-
-.header h1 {
-    margin: 0;
-    flex-grow: 1;  /* Makes sure text stays centered */
-    text-align: center;
-    font-family: 'Swecosans', sans-serif;
-}
-
-.container {
-    display: flex;
-    flex: 1;
-}
-
-.chat-container {
-    width: 80vw;  /* Full screen width */
-    height: 88vh; /* Full screen height */
-    display: flex;
-    flex-direction: column;
-    font-family: 'Swecosans', sans-serif;
-    justify-content: space-between;  /* Push input to bottom */
-    align-items: center;
-    background: #282828;
-    padding: 20px;
-    gap: 10px;
-    font-family: 'Swecosans', sans-serif;
-    
-}
-.chat-box {
-    font-family: 'Swecosans', sans-serif;
-    flex-grow: 1;  /* Allows chat to expand */
-    width: 80%;   /* Full width */
-    max-height: 80vh; /* Prevents it from overflowing */
-    overflow-y: auto;
-    /* border: 1px solid #ddd; */
-    padding: 10px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-}
+/* The fonts */
 @font-face {
     font-family: 'Swecosans';
     src: url('../fonts/SwecoSans-Regular.otf') format('opentype');
@@ -105,13 +41,81 @@ body {
     font-style: italic;
 }
 
+body {
+    font-family: 'Swecosans', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+/* header and its features */
+.header { 
+    background-color: #111111;
+    color: rgb(251, 251, 251);
+    align-items: center;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+
+.header img {
+    width: 200px;  
+    height: auto;
+    position: absolute;
+    left: 20px;  
+}
+
+.header h1 {
+    margin: 0;
+    flex-grow: 1;  /* Makes sure text stays centered */
+    text-align: center;
+    font-family: 'Swecosans', sans-serif;
+}
+
+.container {
+    display: flex;
+    color: #282828;
+    flex: 1;
+    padding: auto;
+}
+
+.chat-container {
+    width: 100vw;  /* Full screen width */
+    height: 100vh; /* Full screen height */
+    display: flex;
+    flex-direction: column;
+    font-family: 'Swecosans', sans-serif;
+    align-items: center;
+    background: #282828;
+    padding: 20px;
+    gap: 10px;
+    font-family: 'Swecosans', sans-serif;
+    
+}
+.chat-box {
+    font-family: 'Swecosans', sans-serif;
+    font-size:21px;
+    flex-grow: 1;  /* Allows chat to expand */
+    width: 60%;   /* Full width */
+    max-height: 90vh; /* Prevents it from overflowing */
+    overflow-y: auto; /* border: 1px solid #ddd; */
+    padding:20px;
+    background-color: #282828;
+    display: flex;
+    flex-direction: column;
+}
+
 /* Gör sidofältet (sidebar) till en fullhöjdscontainer */
 .sidebar {
     position: relative; /* Ser till att knapparna placeras relativt sidebar */
-    width: 200px;
+    width: 400px;
     background-color: #111111;
-    color: rgb(168, 164, 164);
+    color: rgb(251, 251, 251);
     padding: 20px;
+    font-size: x-large;
     display: flex;
     flex-direction: column; /* Staplar elementen vertikalt */
     height: 100vh; /* 🔥 Sidebar täcker hela höjden */
@@ -120,7 +124,7 @@ body {
 /* Se till att "Privacy" och "Help" ligger längst ner */
 .bottom-links {
     display: flex;
-    justify-content: space-between; /* Gör så att knapparna ligger bredvid varandra */
+    justify-content: space-between; /* knapparna ligger bredvid varandra */
     padding-top: 20px; /* Lägg lite avstånd från ovanstående element */
     gap: 10px; /* Avstånd mellan knapparna */
 }
@@ -136,6 +140,8 @@ body {
     text-align: center;
     flex: 1; /* 🔥 Gör att båda knapparna tar lika mycket plats */
     background-color: #222; /* Gör knapparna mer synliga */
+    font-family: 'Swecosans', sans-serif;
+    font-size: large;
 }
 
 /* Hover-effekt */
@@ -149,13 +155,12 @@ body {
 .sidebar a {
     font-family: 'Swecosans', sans-serif;
     text-decoration: none;
-    color: rgb(223, 219, 219);
+    color: rgb(251, 251, 251);
     padding: 10px;
     border-radius: 5px; /* Keeps the links styled */
     background-color: transparent; /* Removes the full sidebar button look */
     text-align: left;
-    display: inline-block; /* Ensures links do not stretch */
-    width: auto; /* Prevents full width */
+    display: inline-block; /*Ensures links do not stretch */
 }
 
 .sidebar a:hover {
@@ -181,24 +186,33 @@ body {
 .main-content {
     flex: 1;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #282828;
 }
 .user-message {
     font-family: 'Swecosans', sans-serif;
     align-self: flex-end; /* Moves user message to the right */
-    color: rgb(0, 0, 1);
-    background-color: #f0f0f0; /* Light gray bubble */
+    color: rgb(251, 251, 252);
+    background-color: #4a4a4a; /* Light gray bubble */
     padding: 10px 15px; /* Spacing inside the bubble */
     border-radius: 15px; /* Rounded corners */
     max-width: 60%; /* Prevents too wide messages */
     display: inline-block; /* Makes it wrap around text */
     text-align: left; /* Aligns text inside the bubble */
 }
+
 .bot-message {
-    align-self: flex-start; /* Push message to the left */
-    color: rgb(0,0,0); /* Black text */
+    display: flex; /* ✅ Keeps emoji and text in one line */
+    align-items: flex-start; /* ✅ Aligns emoji with text */
+    color: rgb(254, 254, 254); /* Green text */
     max-width: 60%;
+    font-size: x-large;
+    background-color: #282828; /* Optional: Light gray background */
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size:x-large;
 }
+
+
 mjx-container {
     color: rgb(15, 145, 78) !important; /* Forces all MathJax elements to match bot-message color */
 }
@@ -229,33 +243,35 @@ mjx-container {
 }
 
 .toggle-thought:hover {
-    background-color: #0056b3;
+    background-color: #282828;
 }
 
 /* Thought Content (Hidden by Default) */
 .thought-content {
-    background-color: #f8f9fa;
+    background-color: #58595a;
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 5px;
     margin-top: 5px;
+    font-size: medium;
+    font-family: 'Swecosans', sans-serif;
     display: none;
 }
 
 .input-area{
-    width: 80%;  /* Full width */
-    height: 50px;  /* Increase height */
-    font-size: 16px;  /* Make text larger */
+    width: 100%;  /* Full width */
+    height: 100px;  /* Increase height */
+    font-size:xx-large;  /* Make text larger */
     padding: 10px;  /* Add padding for better spacing */
     border-radius: 5px;
+    font-family: 'Swecosans', sans-serif;
     box-sizing: border-box;  /* Prevents padding from breaking width */
-    display: flex;
     align-items: center;
 }
 
 button {
     width: 15%;
-    background-color: #4d6bfe;
+    background-color: #fafafc;
     color: white;
     border: none;
     padding: 10px;
@@ -263,15 +279,13 @@ button {
     cursor: pointer;
 }
 textarea {
-    width: 100%;
-    height: 80px;  /* Make it bigger */
-    font-size: 16px;
+    width: 70%;
+    height: 100px;  /* Make it bigger */
+    font-size: xx-large;
     padding:15px;
-    border: 2px solid #ccc;
+    border: 2px solid #fffefe;
     border-radius: 5px;
-    box-sizing: border-box;
-    resize: none;  /* Prevents resizing */
-    
+    font-family: 'Swecosans', sans-serif;
 }
 
 button:hover {
@@ -279,24 +293,27 @@ button:hover {
 }
 
 .footer {
+    position: relative; /* Keeps it in flow */
+    bottom: 0;
     background-color: #111111;
     color: white;
     text-align: center;
     padding: 10px;
+    font-family: 'Swecosans', sans-serif;
 }
 .input-area {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 /* Professional Code Block Styling */
 .code-block {
-    background-color: #1e1e1e; /* Dark background */
+    background-color: #716f6f; /* Dark background */
     color: #ffffff; /* Light text */
     padding: 15px;
     border-radius: 8px;
     overflow-x: auto;
-    font-family: "Courier New", monospace;
+    font-family: 'Swecosans', sans-serif;
     font-size: 14px;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -305,11 +322,12 @@ button:hover {
 /* Code Block Styling */
 .code-container {
     position: relative;
+    font-family: 'Swecosans', sans-serif;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
-    background-color: #1e1e1e;
-    color: #ffffff;
+    background-color: #716f6f;
+    color: #716f6f;
     font-family: "Courier New", monospace;
     font-size: 14px;
     margin-top: 10px;
@@ -321,7 +339,7 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #2b2b2b;
+    background: #716f6f;
     padding: 5px 10px;
     font-size: 14px;
     color: #f8f8f2;
@@ -349,7 +367,7 @@ button:hover {
 
 /* Syntax Highlighting */
 pre[class*="language-"] {
-    background: #1e1e1e !important;
+    background: #716f6f !important;
     border-radius: 8px;
     padding: 15px;
     overflow-x: auto;
@@ -362,8 +380,8 @@ pre[class*="language-"] {
     padding: 15px 20px; /* Spacing inside the bubble */
     border-radius: 15px; /* Rounded bubble effect */
     text-align: center;
-    font-size: 18px;
-    max-width: 60%; /* Ensures it doesn’t take full width */
+    font-size: 20px;
+    max-width: 50%; /* How big the bubble is going to be */
     margin: 50px auto; /* Centers the message */
     display: flex;
     justify-content: center;
@@ -390,6 +408,7 @@ pre[class*="language-"] {
 .modal-content {
     background-color: white;
     font-family: 'Swecosans', sans-serif;
+    font-size: large;
     padding: 20px;
     border-radius: 8px;
     width: 40%;
@@ -421,6 +440,7 @@ pre[class*="language-"] {
 }
 
 textarea {
+font-family: 'Swecosans', sans-serif;
 width: 100%;
 height: 40px;
 resize: none;
@@ -433,7 +453,7 @@ background: none;
 border: none;
 font-size: 24px;
 cursor: pointer;
-color: blue; /* Change color as needed */
+color: white; /* Change color as needed */
 }
 
 #sendButton:hover {
