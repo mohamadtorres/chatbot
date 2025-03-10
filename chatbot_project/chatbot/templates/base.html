@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Prism.js for Syntax Highlighting -->
 <!-- Markdown-it (For Markdown Parsing) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.3.2/markdown-it.min.js"></script>
 
@@ -18,9 +17,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwecoDeep</title>
-    <!-- <script type="text/javascript" id="MathJax-script" async 
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-    </script> -->
     
     <link rel="stylesheet" href="static\styles\style.css">
 
@@ -48,7 +44,7 @@
                 <a href="#" onclick="openModal('helpModal')">
                     Help <span class="info-icon">ⓘ</span>
                 </a>
-                </div>
+            </div>
         </div>
         
         <!-- Privacy Modal -->
@@ -116,7 +112,9 @@
 
         <div class="chat-container">
             <div class="chat-box" id="chatbox">
-                <!-- Chat messages will appear here... -->
+                <div class="welcome-message"><p>Welcome to SwecoDeep!<br> You can type in any of your prompts for SwecoDeep in the text bar at the bottom of the page and press enter or click on the icon to submit your questions. The AI chatbot will then generate text in an attempt to provide helpful answers to your prompts.<br>
+                    
+                    Note: Please be aware that SwecoDeep is not trained with any information specific to the business of Sweco. We are continuously working to improve the service.</p></div>
             </div>
             <div class="input-area">
                 <textarea id="userInput" placeholder="Type a message..." onkeydown="handleKeyPress(event)"></textarea>
@@ -162,7 +160,8 @@
                         ` : "";
 
                         // ✅ Ensure the thought process appears BEFORE the bot's reply
-                        chatbox.innerHTML += thoughtHtml + `<div class="bot-message">🤖: ${botMessage}</div>`;
+                        chatbox.innerHTML += thoughtHtml + `<div class="bot-message">🤖:${botMessage}</div>`;
+
 
                         // ✅ Ensure Markdown, Syntax Highlighting & KaTeX Work
                         setTimeout(() => {
@@ -216,66 +215,73 @@
                     sendMessage();
                 }
             }
+
             // function formatresponse(response) {
             //     if (!response) return "";
 
-            //     // Convert `\n` to `<br>` for paragraph separation (but not inside code blocks)
-            //     response = response.replace(/\n/g, "<br>");
+            //     const md = window.markdownit(); // ✅ Initialize Markdown-it
+            //     let formattedResponse = md.render(response); // ✅ Convert Markdown to HTML
 
-            //     // Convert **bold text** to `<strong>bold text</strong>`
-            //     response = response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+            //     // ✅ Convert old MathJax format to KaTeX-compatible format
+            //     formattedResponse = formattedResponse
+            //         .replace(/\[([^\]]+)\]/g, "\\($1\\)")  // Inline Math: `[ ... ]` → `\( ... \)`
+            //         .replace(/\\\[(.*?)\\\]/g, "\\[$1\\]") // Block Math: `\[ ... \]` stays unchanged
+            //         .replace(/\$\$(.*?)\$\$/gs, "<span class='math-block'>$$$1$$</span>")  // Block Math: `$$ ... $$`
+            //         .replace(/\$(.*?)\$/g, "<span class='math-inline'>$1</span>");  // Inline Math: `$ ... $`
 
-            //     // Convert __italic text__ to `<em>italic text</em>`
-            //     response = response.replace(/__(.*?)__/g, "<em>$1</em>");
-
-            //     // Convert `- lists` into `<ul><li>` format
-            //     response = response.replace(/- (.*?)(<br>|$)/g, "<li>$1</li>");
-            //     response = response.replace(/(<li>.*<\/li>)+/g, "<ul>$&</ul>"); // Wrap lists in <ul>
-
-            //     // Convert links (URLs) into clickable `<a>` elements
-            //     response = response.replace(/(https?:\/\/[^\s]+)/g, "<a href='$1' target='_blank'>$1</a>");
-
-            //     // ✅ Convert inline code (`code`) into `<code>code</code>`
-            //     response = response.replace(/`([^`]+?)`/g, "<code>$1</code>");
-
-            //     // ✅ Fix multi-line code blocks correctly
-            //     response = response.replace(/```(\w*)\n([\s\S]+?)```/g, function(match, lang, code) {
-            //         let languageClass = lang ? `language-${lang}` : "language-python"; // Default to Python if no language is specified
-
+            //     // ✅ Modify multi-line code blocks to include a "Copy" button
+            //     formattedResponse = formattedResponse.replace(/```(\w*)\n([\s\S]+?)```/g, function(match, lang, code) {
+            //         let languageClass = lang ? `language-${lang}` : "language-plaintext"; // Default if no language is given
             //         return `
             //             <div class="code-container">
             //                 <div class="code-header">
-            //                     <span class="language-label">${languageClass}</span>
+            //                     <span class="language-label">${lang || "Code"}</span>
             //                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             //                 </div>
-            //                 <pre><code class="${languageClass}">${Prism.highlight(code.trim(), Prism.languages[lang] || Prism.languages.python, lang || 'python')}</code></pre>
+            //                 <pre><code class="${languageClass}">${code.trim()}</code></pre>
             //             </div>
             //         `;
             //     });
 
-            //     return response;
+            //     return formattedResponse; // ✅ Return fully formatted response
             // }
             function formatresponse(response) {
                 if (!response) return "";
 
                 const md = window.markdownit(); // ✅ Initialize Markdown-it
                 let formattedResponse = md.render(response); // ✅ Convert Markdown to HTML
-
                 // ✅ Convert old MathJax format to KaTeX-compatible format
                 formattedResponse = formattedResponse
                     .replace(/\[([^\]]+)\]/g, "\\($1\\)")  // Inline Math: `[ ... ]` → `\( ... \)`
                     .replace(/\\\[(.*?)\\\]/g, "\\[$1\\]") // Block Math: `\[ ... \]` stays unchanged
                     .replace(/\$\$(.*?)\$\$/gs, "<span class='math-block'>$$$1$$</span>")  // Block Math: `$$ ... $$`
                     .replace(/\$(.*?)\$/g, "<span class='math-inline'>$1</span>");  // Inline Math: `$ ... $`
+                console.log("Formatted Response Before Fix:", formattedResponse); // Debugging
 
-                return formattedResponse; // ✅ Return fully formatted response
+                // ✅ Wrap ALL detected `<pre><code>` blocks in a "Copy" button container
+                formattedResponse = formattedResponse.replace(
+                    /<pre><code class="(.*?)">(.*?)<\/code><\/pre>/gs,
+                    function (match, lang, code) {
+                        return `
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span class="language-label">${lang || "Code"}</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="${lang}">${code}</code></pre>
+                            </div>
+                        `;
+                    }
+                );
+
+                console.log("Formatted Response After Fix:", formattedResponse); // Debugging
+
+                return formattedResponse;
             }
 
 
 
 
-
-            // ✅ Function to copy code from the box
             function copyCode(button) {
                 let codeBlock = button.parentElement.nextElementSibling.querySelector("code");
                 let textArea = document.createElement("textarea");
@@ -284,9 +290,13 @@
                 textArea.select();
                 document.execCommand("copy");
                 document.body.removeChild(textArea);
+
+                // ✅ Change button text temporarily to "Copied!"
                 button.innerText = "Copied!";
                 setTimeout(() => button.innerText = "Copy", 2000);
             }
+
+
 
 
 
