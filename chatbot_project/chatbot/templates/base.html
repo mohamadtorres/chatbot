@@ -31,19 +31,18 @@
     <div class="container">
         
         <div class="sidebar">
-            <h3>Menu</h3>
             <a href="/">+ New chat</a>
             <a href="#">Recent chats</a>
-            <div class=bottom-links">
-            <!-- Privacy Button -->
-                <a href="#" onclick="openModal('privacyModal')">
-                    Privacy <span class="info-icon">ⓘ</span>
-                </a>
-            
-                <!-- Help Button -->
-                <a href="#" onclick="openModal('helpModal')">
-                    Help <span class="info-icon">ⓘ</span>
-                </a>
+            <div class="bottom-links">
+                <!-- Privacy Button -->
+                    <a href="#" onclick="openModal('privacyModal')">
+                        Privacy <span class="info-icon">ⓘ</span>
+                    </a>
+                
+                    <!-- Help Button -->
+                    <a href="#" onclick="openModal('helpModal')">
+                        Help <span class="info-icon">ⓘ</span>
+                    </a>
             </div>
         </div>
         
@@ -111,15 +110,12 @@
         </div>
 
         <div class="chat-container">
-            <div class="chat-box" id="chatbox">
-                <div class="welcome-message"><p>Welcome to SwecoDeep!<br> You can type in any of your prompts for SwecoDeep in the text bar at the bottom of the page and press enter or click on the icon to submit your questions. The AI chatbot will then generate text in an attempt to provide helpful answers to your prompts.<br>
-                    
-                    Note: Please be aware that SwecoDeep is not trained with any information specific to the business of Sweco. We are continuously working to improve the service.</p></div>
-            </div>
+            <!-- <div class="chat-box" id="chatbox"> -->
+
             <div class="input-area">
                 <textarea id="userInput" placeholder="Enter a prompt here ..." onkeydown="handleKeyPress(event)"></textarea>
                 <button onclick="sendMessage()" id="sendButton">
-                    &#9658; <!-- Unicode for a small right arrow -->
+                    &#8593; <!-- Unicode for a small UP arrow -->
                 </button>
             </div>
         </div>
@@ -220,33 +216,50 @@
             function formatresponse(response) {
                 if (!response) return "";
 
-                const md = window.markdownit(); // ✅ Initialize Markdown-it
-                let formattedResponse = md.render(response); // ✅ Convert Markdown to HTML
-                // ✅ Convert old MathJax format to KaTeX-compatible format
+                const md = window.markdownit(); // Initialize Markdown-it
+                let formattedResponse = md.render(response); // Convert Markdown to HTML
+
+                // ✅ Convert MathJax-style formatting to KaTeX-compatible syntax
                 formattedResponse = formattedResponse
-                    .replace(/\[([^\]]+)\]/g, "\\($1\\)")  // Inline Math: `[ ... ]` → `\( ... \)`
-                    .replace(/\\\[(.*?)\\\]/g, "\\[$1\\]") // Block Math: `\[ ... \]` stays unchanged
-                    .replace(/\$\$(.*?)\$\$/gs, "<span class='math-block'>$$$1$$</span>")  // Block Math: `$$ ... $$`
-                    .replace(/\$(.*?)\$/g, "<span class='math-inline'>$1</span>");  // Inline Math: `$ ... $`
+                    .replace(/\$\$(.*?)\$\$/gs, "<span class='math-block'>$$$1$$</span>") // Block Math
+                    .replace(/\$(.*?)\$/g, "<span class='math-inline'>$1</span>") // Inline Math
+                    .replace(/\\\[(.*?)\\\]/g, "\\[$1\\]") // Preserve existing Block Math
+                    .replace(/\[([^\]]+)\]/g, "\\($1\\)"); // Convert old-style Inline Math
+
                 console.log("Formatted Response Before Fix:", formattedResponse); // Debugging
 
-                // ✅ Wrap ALL detected `<pre><code>` blocks in a "Copy" button container
+                // ✅ Wrap all `<pre><code>` blocks with a copy button
                 formattedResponse = formattedResponse.replace(
                     /<pre><code class="(.*?)">(.*?)<\/code><\/pre>/gs,
-                    function (match, lang, code) {
-                        return `
-                            <div class="code-container">
-                                <div class="code-header">
-                                    <span class="language-label">${lang || "Code"}</span>
-                                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                                </div>
-                                <pre><code class="${lang}">${code}</code></pre>
+                    (match, lang, code) => `
+                        <div class="code-container">
+                            <div class="code-header">
+                                <span class="language-label">${lang || "Code"}</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                             </div>
-                        `;
-                    }
+                            <pre><code class="${lang}">${code}</code></pre>
+                        </div>
+                    `
                 );
 
                 console.log("Formatted Response After Fix:", formattedResponse); // Debugging
+
+                // ✅ Ensure Markdown, Syntax Highlighting & KaTeX Work After Rendering
+                setTimeout(() => {
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+
+                    // Apply KaTeX Rendering to New Content
+                    renderMathInElement(document.getElementById("chatbox"), {
+                        delimiters: [
+                            { left: "$$", right: "$$", display: true },  // Block math
+                            { left: "$", right: "$", display: false },  // Inline math
+                            { left: "\\(", right: "\\)", display: false },  // Inline math alternative
+                            { left: "\\[", right: "\\]", display: true }   // Block math alternative
+                        ]
+                    });
+                }, 50);
 
                 return formattedResponse;
             }
@@ -308,7 +321,6 @@
 
     <div class="footer">
         &copy; 2025 Designed by Sweco based on a <span style="color: #4d6bfe;">DeepSeek</span> model <!--To have the deepseek word in blue like the real deepseek-->
-        <p>SweecoDeep may produce inaccurate information about people, places, or facts. Please check before using the information.</p>
     </div>
 
 </body>

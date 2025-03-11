@@ -58,6 +58,8 @@ body {
     display: flex;
     justify-content: center;
     position: relative;
+    text-align: center;
+    padding-left: 300px;
 }
 
 
@@ -70,7 +72,7 @@ body {
 
 .header h1 {
     margin: 0;
-    flex-grow: 1;  /* Makes sure text stays centered */
+    flex-grow: 1;  /* to have the text centered */
     text-align: center;
     font-family: 'Swecosans', sans-serif;
 }
@@ -83,8 +85,8 @@ body {
 }
 
 .chat-container {
-    width: 100vw;  /* Full screen width */
-    height: 100vh; /* Full screen height */
+    width: 90vw;  /* Full screen width */
+    height: 90vh; /* Full screen height */
     display: flex;
     flex-direction: column;
     font-family: 'Swecosans', sans-serif;
@@ -92,25 +94,30 @@ body {
     background: #282828;
     padding: 20px;
     gap: 10px;
-    font-family: 'Swecosans', sans-serif;
-    
+    color: #b3b0b0;
+    overflow: hidden;
 }
 .chat-box {
-    font-family: 'Swecosans', sans-serif;
-    font-size:21px;
-    flex-grow: 1;  /* Allows chat to expand */
-    width: 60%;   /* Full width */
-    max-height: 90vh; /* Prevents it from overflowing */
-    overflow-y: auto; /* border: 1px solid #ddd; */
-    padding:20px;
+    flex-grow: 1;
+    width: 90%;
+    text-align: left;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    padding: 20px;
+    padding-left: 300px; 
     background-color: #282828;
     display: flex;
     flex-direction: column;
 }
 
-/* Gör sidofältet (sidebar) till en fullhöjdscontainer */
+
+.disclaimer {
+    font-size: medium;
+    color: #888;
+    text-align: center;
+}
+
 .sidebar {
-    position: relative; /* Ser till att knapparna placeras relativt sidebar */
     width: 400px;
     background-color: #111111;
     color: rgb(251, 251, 251);
@@ -118,35 +125,33 @@ body {
     font-size: x-large;
     display: flex;
     flex-direction: column; /* Staplar elementen vertikalt */
-    height: 100vh; /* 🔥 Sidebar täcker hela höjden */
+    height: auto; 
 }
 
 /* Se till att "Privacy" och "Help" ligger längst ner */
 .bottom-links {
-    display: flex;
     justify-content: space-between; /* knapparna ligger bredvid varandra */
     padding-top: 20px; /* Lägg lite avstånd från ovanstående element */
-    gap: 10px; /* Avstånd mellan knapparna */
+    gap: 30px; /* Avstånd mellan knapparna */
 }
 
 /* Style för knapparna */
 #help-button, #privacy-button {
-    color: inherit;
+    color: white;
     cursor: pointer;
-    background: none;
     border: none;
     border-radius: 10px;
     padding: 8px 12px;
     text-align: center;
     flex: 1; /* 🔥 Gör att båda knapparna tar lika mycket plats */
-    background-color: #222; /* Gör knapparna mer synliga */
+    background-color: #c23535; /* Gör knapparna mer synliga */
     font-family: 'Swecosans', sans-serif;
     font-size: large;
 }
 
 /* Hover-effekt */
 #help-button:hover, #privacy-button:hover {
-    background-color: #444;
+    background-color: #313131;
 }
 
 
@@ -178,7 +183,7 @@ body {
 .bottom-links a {
     flex: 1; /* Makes them equal in size */
     text-align: center;
-    background-color: #222; /* Makes them look like buttons */
+    background-color: #111111; /* Makes them look like buttons */
     padding: 8px 10px;
 }
 
@@ -200,16 +205,26 @@ body {
     text-align: left; /* Aligns text inside the bubble */
 }
 
-.bot-message {
-    display: flex; /* ✅ Keeps emoji and text in one line */
-    align-items: flex-start; /* ✅ Aligns emoji with text */
-    color: rgb(254, 254, 254); /* Green text */
+/* .bot-message {
+    display: flex; 
+    align-items: flex-start; 
+    color: rgb(254, 254, 254); 
     max-width: 60%;
     font-size: x-large;
-    background-color: #282828; /* Optional: Light gray background */
+    background-color: #282828; 
     padding: 10px 15px;
     border-radius: 10px;
     font-size:x-large;
+} */
+.bot-message {
+    display: block; /* ❌ Remove 'flex' so paragraphs behave normally */
+    color: rgb(254, 254, 254); /* White text */
+    max-width: 60%;
+    font-size: large;
+    max-width: 80%; /*makes it wieder */
+    background-color: #282828; /* Optional: Light gray background */
+    padding: 10px 15px;
+    border-radius: 10px;
 }
 
 
@@ -217,7 +232,7 @@ mjx-container {
     color: rgb(15, 145, 78) !important; /* Forces all MathJax elements to match bot-message color */
 }
 .math-inline {
-    font-size: 1.1em;
+    font-size: large;
     font-weight: bold;
 }
 
@@ -258,29 +273,33 @@ mjx-container {
     display: none;
 }
 
-.input-area{
-    width: 100%;  /* Full width */
-    height: 100px;  /* Increase height */
-    font-size:xx-large;  /* Make text larger */
-    padding: 10px;  /* Add padding for better spacing */
-    border-radius: 5px;
-    font-family: 'Swecosans', sans-serif;
-    box-sizing: border-box;  /* Prevents padding from breaking width */
+/* Input Area Styling */
+.input-area {
+    width: 35%;
+    height:6%;
+    background-color: #313131; /* Dark gray background */
+    padding: 15px;
     align-items: center;
+    gap: 20px;
+    border-radius: 50px; /* Smooth rounded shape */
+    box-shadow: 0px 4px 10px #313131; /* Subtle shadow */
+    margin-top:0px; /* Spacing from chat box */
+}
+#userInput {
+    font-size: x-large;
+    padding: 10px;
+    border: none;
+    border-radius: 25px; /* Smooth rounded input field */
+    background-color: #313131; /* Darker gray background */
+    color: #f9f6f6; /* Light text color */
+    font-family: 'Swecosans', sans-serif;
+    width: 90%; 
+    outline: none; 
 }
 
-button {
-    width: 15%;
-    background-color: #fafafc;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
 textarea {
     width: 70%;
-    height: 100px;  /* Make it bigger */
+    height: 90px;  /* Make it bigger */
     font-size: xx-large;
     padding:15px;
     border: 2px solid #fffefe;
@@ -293,13 +312,14 @@ button:hover {
 }
 
 .footer {
-    position: relative; /* Keeps it in flow */
-    bottom: 0;
     background-color: #111111;
     color: white;
     text-align: center;
     padding: 10px;
+    height:36px;
     font-family: 'Swecosans', sans-serif;
+    text-align: center;
+    padding-left:350px;
 }
 .input-area {
     display: flex;
@@ -374,16 +394,17 @@ pre[class*="language-"] {
 }
 /* Welcome Message Styling */
 .welcome-message {
-    background-color: #e0e0e0; /* Light gray background */
+    background-color: #918f8f; /* Light gray background */
     font-family: 'Swecosans', sans-serif;
     color: #060606; /* Dark gray text */
     padding: 15px 20px; /* Spacing inside the bubble */
     border-radius: 15px; /* Rounded bubble effect */
     text-align: center;
-    font-size: 20px;
+
+    font-size: 22px;
     max-width: 50%; /* How big the bubble is going to be */
     margin: 50px auto; /* Centers the message */
-    display: flex;
+    margin-left: 330px;
     justify-content: center;
     align-items: center;
 }
@@ -406,7 +427,7 @@ pre[class*="language-"] {
 
 /* Modal Content Box */
 .modal-content {
-    background-color: white;
+    background-color: rgb(254, 251, 251);
     font-family: 'Swecosans', sans-serif;
     font-size: large;
     padding: 20px;
@@ -441,7 +462,7 @@ pre[class*="language-"] {
 
 textarea {
 font-family: 'Swecosans', sans-serif;
-width: 100%;
+width: 90%;
 height: 40px;
 resize: none;
 padding: 8px;
@@ -453,7 +474,7 @@ background: none;
 border: none;
 font-size: 24px;
 cursor: pointer;
-color: white; /* Change color as needed */
+color: rgb(109, 109, 109); /* Change color as needed */
 }
 
 #sendButton:hover {
