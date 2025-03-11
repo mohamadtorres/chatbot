@@ -7,6 +7,7 @@
 <!-- Highlight.js (For Code Syntax Highlighting) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/github-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <!-- KaTeX (For Math Rendering) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.3/katex.min.css">
@@ -120,80 +121,196 @@
             </div>
         </div>
         <script>
-            function sendMessage() {
-                let userInput = document.getElementById("userInput").value;
-                let chatbox = document.getElementById("chatbox");
+            async function sendMessage() {
+            let userInput = document.getElementById("userInput").value;
+            let chatbox = document.getElementById("chatbox");
 
-                if (userInput.trim() === "") return; // Prevent empty messages
+            if (userInput.trim() === "") return; // Prevent empty messages
 
-                // ✅ Display the user message correctly
-                chatbox.innerHTML += `<div class="user-message">${userInput}</div>`;
-                document.getElementById("userInput").value = "";
-                chatbox.scrollTop = chatbox.scrollHeight;
+            // ✅ Display user message instantly
+            chatbox.innerHTML += `<div class="user-message">${userInput}</div>`;
+            document.getElementById("userInput").value = "";
+            chatbox.scrollTop = chatbox.scrollHeight;
 
-                // ✅ Create bot message container
-                let botMessageContainer = document.createElement("div");
-                botMessageContainer.classList.add("bot-message");
-                chatbox.appendChild(botMessageContainer);
-                
-                // ✅ Send request to chatbot API
-                fetch("/chatbot/", {
+            // ✅ Create a separate bot message container for this response
+            let botMessageContainer = document.createElement("div");
+            botMessageContainer.classList.add("bot-message");
+
+            // ✅ Create a streaming placeholder (so each message is unique)
+            let streamingMessage = document.createElement("span");
+            streamingMessage.innerHTML = "🤖: <em>Thinking...</em>"; // ✅ Show "Thinking..." before response
+            botMessageContainer.appendChild(streamingMessage);
+
+            chatbox.appendChild(botMessageContainer); // ✅ Append new message container
+
+            try {
+                // ✅ Step 1: Fetch Full Response (Hidden from user)
+                let response = await fetch("/chatbot/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ message: userInput })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if ("reply" in data) {
-                        let botMessage = formatresponse(data.reply);
-                        let thoughtProcess = data.thought || "";
-
-                        let thoughtHtml = thoughtProcess ? `
-                            <div class="thought-container">
-                                <button class="toggle-thought" onclick="toggleThought(this)" title="Show Thought Process">
-                                    Show thoughts process
-                                </button>
-                                <div class="thought-content" style="display: none;">
-                                    <p><strong>Chatbot Thought Process:</strong></p>
-                                    <p>${thoughtProcess}</p>
-                                </div>
-                            </div>
-                        ` : "";
-
-                        // ✅ Ensure the thought process appears BEFORE the bot's reply
-                        chatbox.innerHTML += thoughtHtml + `<div class="bot-message">🤖:${botMessage}</div>`;
-
-
-
-                        // ✅ Ensure Markdown, Syntax Highlighting & KaTeX Work
-                        setTimeout(() => {
-                            document.querySelectorAll('pre code').forEach((block) => {
-                                hljs.highlightElement(block);
-                            });
-
-                            // ✅ Apply KaTeX after inserting the message
-                            renderMathInElement(chatbox, {
-                                delimiters: [
-                                    { left: "$$", right: "$$", display: true },  // Block math
-                                    { left: "$", right: "$", display: false },  // Inline math
-                                    { left: "\\(", right: "\\)", display: false },  // Ensure inline math
-                                    { left: "\\[", right: "\\]", display: true }   // Ensure block math
-                                ]
-                            });
-                        }, 50);
-                    } else {
-                        chatbox.innerHTML += `<p class="bot-message">ChatBot: Error: No response received.</p>`;
-                    }
-
-                    chatbox.scrollTop = chatbox.scrollHeight; // ✅ Auto-scroll to latest message
-                })
-
-                .catch(error => {
-                    console.error("Error:", error);
-                    chatbox.innerHTML += `<p class="bot-message">Error: Unable to contact chatbot.</p>`;
                 });
-            }
 
+                let responseData = await response.json();
+                let fullMessage = responseData.reply || "";
+                let thoughtProcess = responseData.thought || "";
+
+                // ✅ Step 2: Format the Full Response (Markdown, Math, Code Highlighting)
+                let formattedMessage = marked.parse(fullMessage); // ✅ Convert Markdown to HTML
+
+                // ✅ Apply Syntax Highlighting (for code blocks)
+                let tempDiv = document.createElement("div");
+                tempDiv.innerHTML = formattedMessage;
+                tempDiv.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+
+                // ✅ Apply KaTeX for Math Equations
+                renderMathInElement(tempDiv, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },  // Block math
+                        { left: "$", right: "$", display: false },  // Inline math
+                        { left: "\\(", right: "\\)", display: false },  // Inline math
+                        { left: "\\[", right: "\\]", display: true }   // Block math
+                    ]
+                });
+
+                // ✅ Get final formatted HTML (without replacing previous messages)
+                let finalMessage = tempDiv.innerHTML;
+
+                // ✅ Step 3: Replace "Thinking..." with the actual response (Simulated Typing)
+                await simulateStreaming(streamingMessage, finalMessage);
+
+                // ✅ Step 4: Append Thought Process (if available)
+                if (thoughtProcess) {
+                    let thoughtContainer = document.createElement("div");
+                    thoughtContainer.classList.add("thought-container");
+                    thoughtContainer.innerHTML = `
+                        <button class="toggle-thought" onclick="toggleThought(this)" title="Show Thought Process">
+                            Show thought process
+                        </button>
+                        <div class="thought-content" style="display: none;">
+                            <p><strong>Chatbot Thought Process:</strong></p>
+                            <p>${thoughtProcess}</p>
+                        </div>
+                    `;
+                    chatbox.appendChild(thoughtContainer);
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                streamingMessage.innerHTML = `<p>Error: Unable to contact chatbot.</p>`;
+            }
+        }
+
+        // ✅ Simulated streaming effect AFTER response is fully generated
+        async function simulateStreaming(element, formattedText) {
+            let words = formattedText.split(" ");
+            let displayedMessage = "🤖: ";
+
+            for (let word of words) {
+                displayedMessage += word + " ";
+                element.innerHTML = displayedMessage;
+                chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll
+                await new Promise(resolve => setTimeout(resolve, 50)); // ✅ Typing delay
+            }
+        }
+
+
+        // async function sendMessage() {
+        //     let userInput = document.getElementById("userInput").value;
+        //     let chatbox = document.getElementById("chatbox");
+
+        //     if (userInput.trim() === "") return; // Prevent empty messages
+
+        //     // ✅ Display user message instantly
+        //     chatbox.innerHTML += `<div class="user-message">${userInput}</div>`;
+        //     document.getElementById("userInput").value = "";
+        //     chatbox.scrollTop = chatbox.scrollHeight;
+
+        //     // ✅ Create a separate bot message container for this response
+        //     let botMessageContainer = document.createElement("div");
+        //     botMessageContainer.classList.add("bot-message");
+
+        //     // ✅ Create a streaming placeholder (so each message is unique)
+        //     let streamingMessage = document.createElement("span");
+        //     streamingMessage.innerHTML = "🤖: ";
+        //     botMessageContainer.appendChild(streamingMessage);
+
+        //     chatbox.appendChild(botMessageContainer); // ✅ Append new message container
+
+        //     try {
+        //         // ✅ Step 1: Fetch Full Response (Hidden from user)
+        //         let response = await fetch("/chatbot/", {
+        //             method: "POST",
+        //             headers: { "Content-Type": "application/json" },
+        //             body: JSON.stringify({ message: userInput })
+        //         });
+
+        //         let responseData = await response.json();
+        //         let fullMessage = responseData.reply || "";
+        //         let thoughtProcess = responseData.thought || "";
+
+        //         // ✅ Step 2: Format the Full Response (Markdown, Math, Code Highlighting)
+        //         let formattedMessage = marked.parse(fullMessage); // ✅ Convert Markdown to HTML
+
+        //         // ✅ Apply Syntax Highlighting (for code blocks)
+        //         let tempDiv = document.createElement("div");
+        //         tempDiv.innerHTML = formattedMessage;
+        //         tempDiv.querySelectorAll('pre code').forEach((block) => {
+        //             hljs.highlightElement(block);
+        //         });
+
+        //         // ✅ Apply KaTeX for Math Equations
+        //         renderMathInElement(tempDiv, {
+        //             delimiters: [
+        //                 { left: "$$", right: "$$", display: true },  // Block math
+        //                 { left: "$", right: "$", display: false },  // Inline math
+        //                 { left: "\\(", right: "\\)", display: false },  // Inline math
+        //                 { left: "\\[", right: "\\]", display: true }   // Block math
+        //             ]
+        //         });
+
+        //         // ✅ Get final formatted HTML (without replacing previous messages)
+        //         let finalMessage = tempDiv.innerHTML;
+
+        //         // ✅ Step 3: Show the Message with Simulated Typing Effect
+        //         await simulateStreaming(streamingMessage, finalMessage);
+
+        //         // ✅ Step 4: Append Thought Process (if available)
+        //         if (thoughtProcess) {
+        //             let thoughtContainer = document.createElement("div");
+        //             thoughtContainer.classList.add("thought-container");
+        //             thoughtContainer.innerHTML = `
+        //                 <button class="toggle-thought" onclick="toggleThought(this)" title="Show Thought Process">
+        //                     Show thought process
+        //                 </button>
+        //                 <div class="thought-content" style="display: none;">
+        //                     <p><strong>Chatbot Thought Process:</strong></p>
+        //                     <p>${thoughtProcess}</p>
+        //                 </div>
+        //             `;
+        //             chatbox.appendChild(thoughtContainer);
+        //         }
+
+        //     } catch (error) {
+        //         console.error("Error:", error);
+        //         streamingMessage.innerHTML += `<p>Error: Unable to contact chatbot.</p>`;
+        //     }
+        // }
+
+        // // ✅ Simulated streaming effect AFTER response is fully generated
+        // async function simulateStreaming(element, formattedText) {
+        //     let words = formattedText.split(" ");
+        //     let displayedMessage = "🤖: ";
+
+        //     for (let word of words) {
+        //         displayedMessage += word + " ";
+        //         element.innerHTML = displayedMessage;
+        //         chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll
+        //         await new Promise(resolve => setTimeout(resolve, 50)); // ✅ Typing delay
+        //     }
+        // }
 
 
         
@@ -224,12 +341,12 @@
                 const md = window.markdownit(); // Initialize Markdown-it
                 let formattedResponse = md.render(response); // Convert Markdown to HTML
 
-                // ✅ Convert MathJax-style formatting to KaTeX-compatible syntax
+                // ✅ Ensure KaTeX renders properly, including `\boxed{}`
                 formattedResponse = formattedResponse
                     .replace(/\$\$(.*?)\$\$/gs, "<span class='math-block'>$$$1$$</span>") // Block Math
                     .replace(/\$(.*?)\$/g, "<span class='math-inline'>$1</span>") // Inline Math
-                    .replace(/\\\[(.*?)\\\]/g, "\\[$1\\]") // Preserve existing Block Math
-                    .replace(/\[([^\]]+)\]/g, "\\($1\\)"); // Convert old-style Inline Math
+                    .replace(/\\\[(.*?)\\\]/g, "\\[$1\\]") // Preserve Block Math
+                    .replace(/\\\((.*?)\\\)/g, "\\($1\\)"); // Preserve Inline Math
 
                 console.log("Formatted Response Before Fix:", formattedResponse); // Debugging
 
@@ -255,19 +372,21 @@
                         hljs.highlightElement(block);
                     });
 
-                    // Apply KaTeX Rendering to New Content
+                    // ✅ Apply KaTeX Rendering to New Content
                     renderMathInElement(document.getElementById("chatbox"), {
                         delimiters: [
                             { left: "$$", right: "$$", display: true },  // Block math
                             { left: "$", right: "$", display: false },  // Inline math
                             { left: "\\(", right: "\\)", display: false },  // Inline math alternative
                             { left: "\\[", right: "\\]", display: true }   // Block math alternative
-                        ]
+                        ],
+                        throwOnError: false, // ✅ Prevent crashes on math errors
                     });
                 }, 50);
 
                 return formattedResponse;
             }
+
 
 
 

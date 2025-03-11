@@ -112,13 +112,6 @@ body {
     scrollbar-color: #3f3f3f #2a2a2a;
 }
 
-
-.disclaimer {
-    font-size: medium;
-    color: #888;
-    text-align: center;
-}
-
 .sidebar {
     width: 400px;
     background-color: #111111;
@@ -205,7 +198,7 @@ body {
     max-width: 60%; /* Prevents too wide messages */
     display: inline-block; /* Makes it wrap around text */
     text-align: left;
-    font-size: x-large;
+    font-size: large;
     margin-right: 300px;
 }
 
@@ -225,7 +218,7 @@ body {
     display: block; /* ❌ Remove 'flex' so paragraphs behave normally */
     color: rgb(254, 254, 254); /* White text */
     max-width: 60%;
-    font-size: x-large;
+    font-size: large;
     max-width: 80%; /*makes it wieder */
     background-color: #282828; /* Optional: Light gray background */
     padding: 10px 15px;
@@ -310,7 +303,7 @@ mjx-container {
 textarea {
     width: 70%;
     height: 90px;  /* Make it bigger */
-    font-size: xx-large;
+    font-size: x-large;
     padding:15px;
     border: 2px solid #fffefe;
     border-radius: 5px;
@@ -402,22 +395,6 @@ pre[class*="language-"] {
     padding: 15px;
     overflow-x: auto;
 }
-/* Welcome Message Styling */
-.welcome-message {
-    background-color: #918f8f; /* Light gray background */
-    font-family: 'Swecosans', sans-serif;
-    color: #060606; /* Dark gray text */
-    padding: 15px 20px; /* Spacing inside the bubble */
-    border-radius: 15px; /* Rounded bubble effect */
-    text-align: center;
-
-    font-size: 22px;
-    max-width: 50%; /* How big the bubble is going to be */
-    margin: 50px auto; /* Centers the message */
-    margin-left: 330px;
-    justify-content: center;
-    align-items: center;
-}
 
 
 /* Modal Background */
@@ -488,5 +465,5 @@ color: rgb(109, 109, 109); /* Change color as needed */
 }
 
 #sendButton:hover {
-color: rgb(42, 42, 202);
+color: rgb(247, 247, 250);
 }
