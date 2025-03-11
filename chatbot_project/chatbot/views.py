@@ -1,8 +1,8 @@
 import requests #to send api requests
-from django.http import HttpResponse,JsonResponse #Helps to return dchatbot responses in json format
+from django.http import HttpResponse,JsonResponse , StreamingHttpResponse#Helps to return dchatbot responses in json format
 import json
 from django.views.decorators.csrf import csrf_exempt
-
+import time
 
 from django.template import loader
 
