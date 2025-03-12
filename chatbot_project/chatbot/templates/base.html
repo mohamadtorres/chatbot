@@ -122,15 +122,23 @@
         </div>
         <script>
             async function sendMessage() {
-            let userInput = document.getElementById("userInput").value;
-            let chatbox = document.getElementById("chatbox");
+            let userInput = document.getElementById("userInput").value; //gets the text user typed in userInput field
+            let chatbox = document.getElementById("chatbox"); //select the chatbox element where the message will be displayed
 
             if (userInput.trim() === "") return; // Prevent empty messages
 
-            // ✅ Display user message instantly
-            chatbox.innerHTML += `<div class="user-message">${userInput}</div>`;
+            // chatbox.innerHTML += `<div class="user-message">${userInput}</div>`; //adds a new message to the chatbox userInput element
+            // document.getElementById("userInput").value = "";// after the message has been sent it clears the userInput area
+            // chatbox.scrollTop = chatbox.scrollHeight; //auto scroll to the latest message
+            // ✅ STEP 3: Display user message instantly
+            let userMessageDiv = document.createElement("div"); // Create a div for the message
+            userMessageDiv.classList.add("user-message"); // Add a CSS class
+            userMessageDiv.innerText = userInput; // Set the text inside the div
+            chatbox.appendChild(userMessageDiv); // Append to chatbox
             document.getElementById("userInput").value = "";
-            chatbox.scrollTop = chatbox.scrollHeight;
+            setTimeout(() => {
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 10);
 
             // ✅ Create a separate bot message container for this response
             let botMessageContainer = document.createElement("div");

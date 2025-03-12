@@ -103,7 +103,7 @@ body {
     text-align: center;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
-    padding: 20px;
+    padding: 50px;
     padding-left: 300px; 
     background-color: #282828;
     display: flex;
