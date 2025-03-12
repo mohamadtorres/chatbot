@@ -63,4 +63,3 @@ def chatbot_view(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Only POST requests are allowed"}, status=400)
-

@@ -218,7 +218,7 @@ body {
     display: block; /* ❌ Remove 'flex' so paragraphs behave normally */
     color: rgb(254, 254, 254); /* White text */
     max-width: 60%;
-    font-size: large;
+    font-size: x-large;
     max-width: 80%; /*makes it wieder */
     background-color: #282828; /* Optional: Light gray background */
     padding: 10px 15px;
