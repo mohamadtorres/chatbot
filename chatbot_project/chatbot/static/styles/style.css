@@ -341,6 +341,11 @@ button:hover {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+@media (forced-colors: active) {
+    * {
+        forced-color-adjust: none; /* New standard */
+    }
+}
 
 /* Code Block Styling */
 .code-container {
